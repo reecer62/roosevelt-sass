@@ -1,0 +1,44 @@
+{
+  "name": "roosevelt-sass",
+  "description": "SASS CSS preprocessor support for Roosevelt MVC web framework",
+  "author": "Troy Coutu <autre31415@gmail.com>",
+  "version": "0.1.0",
+  "homepage": "https://github.com/rooseveltframework/roosevelt-sass",
+  "license": "CC-BY-4.0",
+  "main": "roosevelt-sass.js",
+  "readmeFilename": "README.md",
+  "engines": {
+    "node": ">=6.0.0"
+  },
+  "engineStrict": true,
+  "dependencies": {
+    "node-sass": "^4.6.1"
+  },
+  "devDependencies": {
+    "standard": "^10.0.3",
+    "lint-staged": "^5.0.0",
+    "husky": "^0.14.3"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/rooseveltframework/roosevelt-sass.git"
+  },
+  "keywords": [
+    "roosevelt.js",
+    "node-sass",
+    "node.js",
+    "sass",
+    "css",
+    "preprocessor"
+  ],
+  "preferGlobal": true,
+  "_from": "roosevelt-sass@*",
+  "gitHead": "",
+  "scripts": {
+    "test": "standard",
+    "precommit": "lint-staged"
+  },
+  "lint-staged": {
+    "*.js": "standard"
+  }
+}
