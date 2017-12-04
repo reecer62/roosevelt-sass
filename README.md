@@ -1,6 +1,8 @@
 roosevelt-sass
 ===
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/rooseveltframework/roosevelt-sass.svg)](https://greenkeeper.io/)
+
 [SASS](http://sass-lang.com/) CSS preprocessor support for [Roosevelt MVC web framework](https://github.com/rooseveltframework/roosevelt).
 
 Usage
