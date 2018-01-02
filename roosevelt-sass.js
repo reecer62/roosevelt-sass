@@ -4,12 +4,12 @@ const sass = require('node-sass')
 
 module.exports = {
   versionCode: function (app) {
-    return `$${app.get('params').versionedCssFile.varName}: '${app.get('appVersion')}';\n`
+    return `$${app.get('params').css.versionFile.varName}: '${app.get('appVersion')}';\n`
   },
 
   parse: function (app, fileName) {
     return new Promise((resolve, reject) => {
-      const params = app.get('params').cssCompiler.params
+      const params = app.get('params').css.compiler.params
       let options = params || {}
 
       options.data = fs.readFileSync(path.join(app.get('cssPath'), fileName), 'utf8')
