@@ -2,7 +2,7 @@
   "name": "roosevelt-sass",
   "description": "SASS CSS preprocessor support for Roosevelt MVC web framework",
   "author": "Troy Coutu <autre31415@gmail.com>",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "homepage": "https://github.com/rooseveltframework/roosevelt-sass",
   "license": "CC-BY-4.0",
   "main": "roosevelt-sass.js",
