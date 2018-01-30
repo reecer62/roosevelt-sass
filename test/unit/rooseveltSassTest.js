@@ -22,10 +22,10 @@ describe('Roosevelt Sass Section Test', function () {
   }
   `
   // path to where the file with the CSS source string written on it will be
-  const pathOfStaticCSS = path.join(appDir, 'statics', 'css', 'a.js')
+  const pathOfStaticCSS = path.join(appDir, 'statics', 'css', 'a.css')
 
   // path to where the compiled CSS file will be written to
-  const pathOfcompiledCSS = path.join(appDir, 'statics', '.build', 'css', 'a.js')
+  const pathOfcompiledCSS = path.join(appDir, 'statics', '.build', 'css', 'a.css')
 
   beforeEach(function () {
     // start by generating a statics folder in the roosevelt test app directory
