@@ -84,7 +84,7 @@ describe('Roosevelt Sass Section Test', function () {
     })
   })
 
-  it('should make the same compiled css file if a param is passed to Roosevelt-Sass as to if the file and params were passed to Sass', function (done) {
+  it('should make the same compiled css file if a param is passed to Roosevelt-Sass as to if the file and params were passed to sass', function (done) {
     // css string that represents the css file that was compiled with the compress set to false
     const options = {file: pathOfStaticCSS, indentType: 'tab'}
     const paramResult = sass.renderSync(options)
