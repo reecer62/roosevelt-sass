@@ -74,7 +74,7 @@ describe('Roosevelt Sass Section Test', function () {
     // fork the app and run it as a child process
     const testApp = fork(path.join(appDir, 'app.js'), {'stdio': ['pipe', 'pipe', 'pipe', 'ipc']})
 
-    // grab the string data from the compiled js file and compare that to the string of what a normal uglified looks like
+    // grab the string data from the compiled css file and compare that to the string of what a normal uglified looks like
     testApp.on('message', () => {
       let contentsOfCompiledCSS = fs.readFileSync(pathOfcompiledCSS, 'utf8')
       let test = contentsOfCompiledCSS === noParamResult.css.toString()
@@ -84,8 +84,8 @@ describe('Roosevelt Sass Section Test', function () {
     })
   })
 
-  it('should make the same compiled js file if a param is passed to Roosevelt-Sass as to if the file and params were passed to Sass', function (done) {
-    // JS string that represents the js file that was compiled with the compress set to false
+  it('should make the same compiled css file if a param is passed to Roosevelt-Sass as to if the file and params were passed to Sass', function (done) {
+    // css string that represents the css file that was compiled with the compress set to false
     const options = {file: pathOfStaticCSS, indentType: 'tab'}
     const paramResult = sass.renderSync(options)
 
@@ -111,7 +111,7 @@ describe('Roosevelt Sass Section Test', function () {
     // fork the app and run it as a child process
     const testApp = fork(path.join(appDir, 'app.js'), {'stdio': ['pipe', 'pipe', 'pipe', 'ipc']})
 
-    // grab the string data from the compiled js file and compare that to the string of what a normal uglified looks like
+    // grab the string data from the compiled css file and compare that to the string of what a normal uglified looks like
     testApp.on('message', (app) => {
       let contentsOfCompiledCSS = fs.readFileSync(pathOfcompiledCSS, 'utf8')
       let test = contentsOfCompiledCSS === paramResult.css.toString()
@@ -122,7 +122,7 @@ describe('Roosevelt Sass Section Test', function () {
   })
 
   it('should make the a CSS compiled file that has a output style of nested if noMinify is true, regardless of what is put in outputStyle', function (done) {
-    // JS string that represents the js file that was compiled with the compress set to false
+    // css string that represents the css file that was compiled with the compress set to false
     const options = {file: pathOfStaticCSS, outputStyle: 'nested'}
     const paramResult = sass.renderSync(options)
 
@@ -149,7 +149,7 @@ describe('Roosevelt Sass Section Test', function () {
     // fork the app and run it as a child process
     const testApp = fork(path.join(appDir, 'app.js'), {'stdio': ['pipe', 'pipe', 'pipe', 'ipc']})
 
-    // grab the string data from the compiled js file and compare that to the string of what a normal uglified looks like
+    // grab the string data from the compiled css file and compare that to the string of what a normal uglified looks like
     testApp.on('message', (app) => {
       let contentsOfCompiledCSS = fs.readFileSync(pathOfcompiledCSS, 'utf8')
       let test = contentsOfCompiledCSS === paramResult.css.toString()
@@ -160,7 +160,7 @@ describe('Roosevelt Sass Section Test', function () {
   })
 
   it('should make the a CSS compiled file that has a output style of something other than nested if noMinify is false and something else is put into outputStyle', function (done) {
-    // JS string that represents the js file that was compiled with the compress set to false
+    // css string that represents the css file that was compiled with the compress set to false
     const options = {file: pathOfStaticCSS, outputStyle: 'nested'}
     const paramResult = sass.renderSync(options)
 
@@ -187,7 +187,7 @@ describe('Roosevelt Sass Section Test', function () {
     // fork the app and run it as a child process
     const testApp = fork(path.join(appDir, 'app.js'), {'stdio': ['pipe', 'pipe', 'pipe', 'ipc']})
 
-    // grab the string data from the compiled js file and compare that to the string of what a normal uglified looks like
+    // grab the string data from the compiled css file and compare that to the string of what a normal uglified looks like
     testApp.on('message', (app) => {
       let contentsOfCompiledCSS = fs.readFileSync(pathOfcompiledCSS, 'utf8')
       let test = contentsOfCompiledCSS === paramResult.css.toString()
@@ -278,8 +278,9 @@ describe('Roosevelt Sass Section Test', function () {
     // fork the app and run it as a child process
     const testApp = fork(path.join(appDir, 'app.js'), {'stdio': ['pipe', 'pipe', 'pipe', 'ipc']})
 
+    // see that the app throws an error
     testApp.stderr.on('data', (data) => {
-      if (data.includes('failed')) {
+      if (data.includes('failed to parse')) {
         testApp.kill()
         done()
       }
