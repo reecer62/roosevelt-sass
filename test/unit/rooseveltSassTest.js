@@ -289,6 +289,8 @@ describe('Roosevelt Sass Section Test', function () {
     // It should not compiled, meaning that if it did, something is off with the error system
     testApp.on('message', () => {
       assert.fail('the app was able to initialize, meaning that roosevelt-sass was not able to detect the error')
+      testApp.kill()
+      done()
     })
   })
 })
