@@ -20,12 +20,24 @@ module.exports = {
         options.outputStyle = 'nested'
       }
 
+      // add the sourceMap param to option if the env is in development
+      if (app.settings.env === 'development') {
+        options.sourceMap = params.sourceMap
+        options.outFile = params.outFile
+      } else {
+        options.sourceMap = undefined
+        options.outFile = undefined
+      }
+
       sass.render(options, (err, output) => {
         if (err) {
           reject(err)
           return
         }
-
+        /*
+        console.log(output.map.toString())
+        console.log(output.css.toString())
+        */
         let newCSS = output.css
         let newFile = fileName.replace('.scss', '.css')
 

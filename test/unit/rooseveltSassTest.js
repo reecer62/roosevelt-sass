@@ -14,15 +14,19 @@ describe('Roosevelt Sass Section Test', function () {
   const appDir = path.join(__dirname, '../app/sassJSTest')
 
   // sample CSS source string to test the compiler with
-  const cssStaticFile = `body {
+  const cssStaticFile = `
+  $widthSize: 100px;
+  body {
     height: 100%;
+    width: $widthSize;
   }
   h1 {
     font-size: 10px;
+    width: $widthSize;
   }
   `
-  // path to where the file with the CSS source string written on it will be
-  const pathOfStaticCSS = path.join(appDir, 'statics', 'css', 'a.css')
+  // path to where the file with the Sass source string written on it will be
+  const pathOfStaticSass = path.join(appDir, 'statics', 'css', 'a.scss')
 
   // path to where the compiled CSS file will be written to
   const pathOfcompiledCSS = path.join(appDir, 'statics', '.build', 'css', 'a.css')
@@ -34,7 +38,7 @@ describe('Roosevelt Sass Section Test', function () {
     // start by generating a statics folder in the roosevelt test app directory
     fse.ensureDirSync(path.join(appDir, 'statics', 'css'))
     // generate sample js files in statics with JS source string from cssStaticFile
-    fs.writeFileSync(pathOfStaticCSS, cssStaticFile)
+    fs.writeFileSync(pathOfStaticSass, cssStaticFile)
   })
 
   afterEach(function (done) {
@@ -49,8 +53,8 @@ describe('Roosevelt Sass Section Test', function () {
   })
 
   it('should make a compiled CSS file that is the same as the compiled CSS string I have generated from using sass', function (done) {
-    // CSS string that represents the CSS file that was compiled with no params set
-    const options = {file: pathOfStaticCSS}
+    // Sass string that represents the CSS file that was compiled with no params set
+    const options = {file: pathOfStaticSass}
     const noParamResult = sass.renderSync(options)
 
     // generate the app
@@ -74,6 +78,10 @@ describe('Roosevelt Sass Section Test', function () {
     // fork the app and run it as a child process
     const testApp = fork(path.join(appDir, 'app.js'), {'stdio': ['pipe', 'pipe', 'pipe', 'ipc']})
 
+    testApp.stderr.on('data', (data) => {
+      console.log(`stderr: ${data}`)
+    })
+
     // grab the string data from the compiled css file and compare that to the string of what a normal uglified looks like
     testApp.on('message', () => {
       let contentsOfCompiledCSS = fs.readFileSync(pathOfcompiledCSS, 'utf8')
@@ -85,8 +93,8 @@ describe('Roosevelt Sass Section Test', function () {
   })
 
   it('should make the same compiled css file if a param is passed to Roosevelt-Sass as to if the file and params were passed to sass', function (done) {
-    // css string that represents the css file that was compiled with the compress set to false
-    const options = {file: pathOfStaticCSS, indentType: 'tab'}
+    // Sass string that represents the css file that was compiled with the compress set to false
+    const options = {file: pathOfStaticSass, indentType: 'tab'}
     const paramResult = sass.renderSync(options)
 
     // generate the app
@@ -122,8 +130,8 @@ describe('Roosevelt Sass Section Test', function () {
   })
 
   it('should make the a CSS compiled file that has a output style of nested if noMinify is true, regardless of what is put in outputStyle', function (done) {
-    // css string that represents the css file that was compiled with the compress set to false
-    const options = {file: pathOfStaticCSS, outputStyle: 'nested'}
+    // Sass string that represents the css file that was compiled with the compress set to false
+    const options = {file: pathOfStaticSass, outputStyle: 'nested'}
     const paramResult = sass.renderSync(options)
 
     // generate the app
@@ -160,8 +168,8 @@ describe('Roosevelt Sass Section Test', function () {
   })
 
   it('should make the a CSS compiled file that has a output style of something other than nested if noMinify is false and something else is put into outputStyle', function (done) {
-    // css string that represents the css file that was compiled with the compress set to false
-    const options = {file: pathOfStaticCSS, outputStyle: 'nested'}
+    // Sass string that represents the css file that was compiled with the compress set to false
+    const options = {file: pathOfStaticSass, outputStyle: 'nested'}
     const paramResult = sass.renderSync(options)
 
     // generate the app
@@ -250,12 +258,12 @@ describe('Roosevelt Sass Section Test', function () {
   })
 
   it('should give a "error" string if there is a massive problem with the code that the program is trying to parse (typo)', function (done) {
-    // CSS source script that has a error in it (typo)
+    // Sass source script that has a error in it (typo)
     const errorTest = `body { widthy: 300 pax`
     // path of where the file with this script will be located
-    const pathOfErrorStaticCSS = path.join(appDir, 'statics', 'css', 'b.css')
+    const pathOfErrorStaticSass = path.join(appDir, 'statics', 'css', 'b.scss')
     // make this file before the test
-    fs.writeFileSync(pathOfErrorStaticCSS, errorTest)
+    fs.writeFileSync(pathOfErrorStaticSass, errorTest)
 
     // generate the app
     generateTestApp({
@@ -293,4 +301,45 @@ describe('Roosevelt Sass Section Test', function () {
       done()
     })
   })
+  /*
+  it.skip('should be able to compile a sourceMap in Dev mode', function (done) {
+    // generate the app
+    generateTestApp({
+     appDir: appDir,
+     generateFolderStructure: true,
+     nodeEnv: "development",
+     css: {
+       compiler: {
+         nodeModule: '../../roosevelt-sass',
+         params: {
+           cleanCSS: {
+             advanced: true,
+             aggressiveMerging: true
+           },
+           sourceMap: true,
+           outFile: path.join(appDir,'static','css','map.css'),
+           sourceMapContents: true,
+           sourceMapEmbed: true,
+           omitSourceMapUrl: true
+         }
+       }
+     }
+   }, sOptions)
+
+   // fork the app and run it as a child process in dev mode
+   const testApp = fork(path.join(appDir, 'app.js'), ['--dev'] ,{'stdio': ['pipe', 'pipe', 'pipe', 'ipc']})
+
+   testApp.stdout.on('data',(data) => {
+     console.log(`stdout: ${data}`)
+   })
+
+   testApp.stderr.on('data',(data) => {
+    console.log(`stderr: ${data}`)
+  })
+
+   testApp.on('message',() => {
+     testApp.kill()
+     done()
+   })
+ }) */
 })
