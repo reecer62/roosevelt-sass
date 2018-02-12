@@ -78,16 +78,15 @@ describe('Roosevelt Sass Section Test', function () {
     // fork the app and run it as a child process
     const testApp = fork(path.join(appDir, 'app.js'), {'stdio': ['pipe', 'pipe', 'pipe', 'ipc']})
 
-    testApp.stderr.on('data', (data) => {
-      console.log(`stderr: ${data}`)
-    })
-
     // grab the string data from the compiled css file and compare that to the string of what a normal uglified looks like
     testApp.on('message', () => {
       let contentsOfCompiledCSS = fs.readFileSync(pathOfcompiledCSS, 'utf8')
       let test = contentsOfCompiledCSS === noParamResult.css.toString()
       assert.equal(test, true)
-      testApp.kill()
+      testApp.kill('SIGINT')
+    })
+
+    testApp.on('exit', () => {
       done()
     })
   })
@@ -124,7 +123,10 @@ describe('Roosevelt Sass Section Test', function () {
       let contentsOfCompiledCSS = fs.readFileSync(pathOfcompiledCSS, 'utf8')
       let test = contentsOfCompiledCSS === paramResult.css.toString()
       assert.equal(test, true)
-      testApp.kill()
+      testApp.kill('SIGINT')
+    })
+
+    testApp.on('exit', () => {
       done()
     })
   })
@@ -162,7 +164,10 @@ describe('Roosevelt Sass Section Test', function () {
       let contentsOfCompiledCSS = fs.readFileSync(pathOfcompiledCSS, 'utf8')
       let test = contentsOfCompiledCSS === paramResult.css.toString()
       assert.equal(test, true)
-      testApp.kill()
+      testApp.kill('SIGINT')
+    })
+
+    testApp.on('exit', () => {
       done()
     })
   })
@@ -200,7 +205,10 @@ describe('Roosevelt Sass Section Test', function () {
       let contentsOfCompiledCSS = fs.readFileSync(pathOfcompiledCSS, 'utf8')
       let test = contentsOfCompiledCSS === paramResult.css.toString()
       assert.equal(test, false)
-      testApp.kill()
+      testApp.kill('SIGINT')
+    })
+
+    testApp.on('exit', () => {
       done()
     })
   })
@@ -252,7 +260,10 @@ describe('Roosevelt Sass Section Test', function () {
       let versionFileNum = versionFileString.split(`'`)
       let test2 = packageJSON.version === versionFileNum[1]
       assert.equal(test2, true)
-      testApp.kill()
+      testApp.kill('SIGINT')
+    })
+
+    testApp.on('exit', () => {
       done()
     })
   })
@@ -264,7 +275,8 @@ describe('Roosevelt Sass Section Test', function () {
     const pathOfErrorStaticSass = path.join(appDir, 'statics', 'css', 'b.scss')
     // make this file before the test
     fs.writeFileSync(pathOfErrorStaticSass, errorTest)
-
+    // variable to hold whater or not an error had occured
+    let error = false
     // generate the app
     generateTestApp({
       appDir: appDir,
@@ -289,15 +301,19 @@ describe('Roosevelt Sass Section Test', function () {
     // see that the app throws an error
     testApp.stderr.on('data', (data) => {
       if (data.includes('failed to parse')) {
-        testApp.kill()
-        done()
+        error = true
       }
     })
 
     // It should not compiled, meaning that if it did, something is off with the error system
     testApp.on('message', () => {
-      assert.fail('the app was able to initialize, meaning that roosevelt-sass was not able to detect the error')
-      testApp.kill()
+      if (!error) {
+        assert.fail('the app was able to initialize, meaning that roosevelt-sass was not able to detect the error')
+      }
+      testApp.kill('SIGINT')
+    })
+
+    testApp.on('exit', () => {
       done()
     })
   })
