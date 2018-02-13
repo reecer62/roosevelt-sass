@@ -317,45 +317,86 @@ describe('Roosevelt Sass Section Test', function () {
       done()
     })
   })
-  /*
-  it.skip('should be able to compile a sourceMap in Dev mode', function (done) {
+
+  it('should be able to compile a sourceMap and put it as a comment in the css file while the app is in Dev mode', function (done) {
     // generate the app
     generateTestApp({
-     appDir: appDir,
-     generateFolderStructure: true,
-     nodeEnv: "development",
-     css: {
-       compiler: {
-         nodeModule: '../../roosevelt-sass',
-         params: {
-           cleanCSS: {
-             advanced: true,
-             aggressiveMerging: true
-           },
-           sourceMap: true,
-           outFile: path.join(appDir,'static','css','map.css'),
-           sourceMapContents: true,
-           sourceMapEmbed: true,
-           omitSourceMapUrl: true
-         }
-       }
-     }
-   }, sOptions)
+      appDir: appDir,
+      generateFolderStructure: true,
+      nodeEnv: 'development',
+      css: {
+        compiler: {
+          nodeModule: '../../roosevelt-sass',
+          params: {
+            cleanCSS: {
+              advanced: true,
+              aggressiveMerging: true
+            },
+            sourceMap: true,
+            outFile: path.join(appDir, 'static', 'css', 'map.css'),
+            sourceMapContents: true,
+            sourceMapEmbed: true
+          }
+        }
+      }
+    }, sOptions)
 
-   // fork the app and run it as a child process in dev mode
-   const testApp = fork(path.join(appDir, 'app.js'), ['--dev'] ,{'stdio': ['pipe', 'pipe', 'pipe', 'ipc']})
+    // fork the app and run it as a child process in dev mode
+    const testApp = fork(path.join(appDir, 'app.js'), {'stdio': ['pipe', 'pipe', 'pipe', 'ipc']})
 
-   testApp.stdout.on('data',(data) => {
-     console.log(`stdout: ${data}`)
-   })
+    // when the server started, read the file of the build css file and see if the inline source map comment is there
+    testApp.on('message', () => {
+      // read the file
+      const cssFileData = fs.readFileSync(path.join(appDir, 'statics', '.build', 'css', 'a.css'))
+      // test whether or not the text includes the unique text that is found within a source map
+      let test = cssFileData.includes('/*# sourceMappingURL=data:application/json;base64')
+      assert.equal(test, true)
+      testApp.kill('SIGINT')
+    })
 
-   testApp.stderr.on('data',(data) => {
-    console.log(`stderr: ${data}`)
+    testApp.on('exit', () => {
+      done()
+    })
   })
 
-   testApp.on('message',() => {
-     testApp.kill()
-     done()
-   })
- }) */
+  it('should not compile a sourceMap and put it as a comment in the css file while the app is in Prod mode', function (done) {
+    // generate the app
+    generateTestApp({
+      appDir: appDir,
+      generateFolderStructure: true,
+      nodeEnv: 'production',
+      css: {
+        compiler: {
+          nodeModule: '../../roosevelt-sass',
+          params: {
+            cleanCSS: {
+              advanced: true,
+              aggressiveMerging: true
+            },
+            sourceMap: true,
+            outFile: path.join(appDir, 'static', 'css', 'map.css'),
+            sourceMapContents: true,
+            sourceMapEmbed: true
+          }
+        }
+      }
+    }, sOptions)
+
+    // fork the app and run it as a child process in prod mode
+    const testApp = fork(path.join(appDir, 'app.js'), {'stdio': ['pipe', 'pipe', 'pipe', 'ipc']})
+
+    // when the server started, read the file of the build css file and see if the inline source map comment is there
+    testApp.on('message', () => {
+      // read the file
+      const cssFileData = fs.readFileSync(path.join(appDir, 'statics', '.build', 'css', 'a.css'))
+      // test whether or not the text includes the unique text that is found within a source map
+      let test = cssFileData.includes('/*# sourceMappingURL=data:application/json;base64')
+      assert.equal(test, false)
+      testApp.kill('SIGINT')
+    })
+
+    testApp.on('exit', () => {
+      done()
+    })
+  })
 })

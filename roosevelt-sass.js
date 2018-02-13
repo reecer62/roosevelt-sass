@@ -24,9 +24,15 @@ module.exports = {
       if (app.settings.env === 'development') {
         options.sourceMap = params.sourceMap
         options.outFile = params.outFile
+        options.sourceMapEmbed = params.sourceMapEmbed
+        options.omitSourceMapUrl = params.omitSourceMapUrl
+        options.sourceMapRoot = params.sourceMapRoot
       } else {
         options.sourceMap = undefined
         options.outFile = undefined
+        options.sourceMapEmbed = undefined
+        options.omitSourceMapUrl = undefined
+        options.sourceMapRoot = undefined
       }
 
       sass.render(options, (err, output) => {
@@ -34,10 +40,7 @@ module.exports = {
           reject(err)
           return
         }
-        /*
-        console.log(output.map.toString())
-        console.log(output.css.toString())
-        */
+
         let newCSS = output.css
         let newFile = fileName.replace('.scss', '.css')
 
