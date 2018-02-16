@@ -20,6 +20,21 @@ module.exports = {
         options.outputStyle = 'nested'
       }
 
+      // add the sourceMap param to option if the env is in development
+      if (app.settings.env === 'development') {
+        options.sourceMap = params.sourceMap
+        options.outFile = params.outFile
+        options.sourceMapEmbed = params.sourceMapEmbed
+        options.omitSourceMapUrl = params.omitSourceMapUrl
+        options.sourceMapRoot = params.sourceMapRoot
+      } else {
+        options.sourceMap = undefined
+        options.outFile = undefined
+        options.sourceMapEmbed = undefined
+        options.omitSourceMapUrl = undefined
+        options.sourceMapRoot = undefined
+      }
+
       sass.render(options, (err, output) => {
         if (err) {
           reject(err)
