@@ -399,4 +399,37 @@ describe('Roosevelt Sass Section Test', function () {
       done()
     })
   })
+
+  it('should be able to make a compiled css file even when the params of the css compilers is undefined', function (done) {
+    // Sass string that represents the css file that was compiled with the compress set to false
+    const options = {file: pathOfStaticSass}
+    const paramResult = sass.renderSync(options)
+
+    // generate the app
+    generateTestApp({
+      appDir: appDir,
+      generateFolderStructure: true,
+      noMinify: false,
+      css: {
+        compiler: {
+          nodeModule: '../../roosevelt-sass'
+        }
+      }
+    }, sOptions)
+
+    // fork the app and run it as a child process
+    const testApp = fork(path.join(appDir, 'app.js'), {'stdio': ['pipe', 'pipe', 'pipe', 'ipc']})
+
+    // grab the string data from the compiled css file and compare that to the string of what a normal uglified looks like
+    testApp.on('message', (app) => {
+      let contentsOfCompiledCSS = fs.readFileSync(pathOfcompiledCSS, 'utf8')
+      let test = contentsOfCompiledCSS === paramResult.css.toString()
+      assert.equal(test, true)
+      testApp.kill('SIGINT')
+    })
+
+    testApp.on('exit', () => {
+      done()
+    })
+  })
 })
