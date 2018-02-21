@@ -31,7 +31,7 @@ describe('Roosevelt Sass Section Test', function () {
   // path to where the compiled CSS file will be written to
   const pathOfcompiledCSS = path.join(appDir, 'statics', '.build', 'css', 'a.css')
 
-    // options that would be passed to generateTestApp
+  // options that would be passed to generateTestApp
   const sOptions = {rooseveltPath: 'roosevelt', method: 'initServer'}
 
   beforeEach(function () {
