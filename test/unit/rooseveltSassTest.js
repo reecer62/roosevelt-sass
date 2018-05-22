@@ -1,8 +1,7 @@
 /* eslint-env mocha */
 
 const assert = require('assert')
-const fs = require('fs')
-const fse = require('fs-extra')
+const fs = require('fs-extra')
 const path = require('path')
 const cleanupTestApp = require('../../node_modules/roosevelt/test/util/cleanupTestApp')
 const generateTestApp = require('../../node_modules/roosevelt/test/util/generateTestApp')
@@ -36,7 +35,7 @@ describe('Roosevelt Sass Section Test', function () {
 
   beforeEach(function () {
     // start by generating a statics folder in the roosevelt test app directory
-    fse.ensureDirSync(path.join(appDir, 'statics', 'css'))
+    fs.ensureDirSync(path.join(appDir, 'statics', 'css'))
     // generate sample js files in statics with JS source string from cssStaticFile
     fs.writeFileSync(pathOfStaticSass, cssStaticFile)
   })
@@ -221,7 +220,7 @@ describe('Roosevelt Sass Section Test', function () {
     }
 
     // generate the package json file with basic data
-    fse.ensureDirSync(path.join(appDir))
+    fs.ensureDirSync(path.join(appDir))
     fs.writeFileSync(path.join(appDir, 'package.json'), JSON.stringify(packageJSON))
 
     // create the app.js file
