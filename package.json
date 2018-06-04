@@ -17,13 +17,13 @@
   },
   "engineStrict": true,
   "dependencies": {
-    "node-sass": "~4.9.0",
-    "fs-extra": "~5.0.0"
+    "node-sass": "~4.9.0"
   },
   "devDependencies": {
     "codecov": "~3.0.2",
     "eslint": "~4.19.1",
     "eslint-plugin-mocha": "~5.0.0",
+    "fs-extra": "~5.0.0",
     "husky": "~0.14.3",
     "lint-staged": "~7.0.0",
     "mocha": "~5.1.0",
@@ -48,7 +48,7 @@
   "gitHead": "",
   "eslintConfig": {
     "parserOptions": {
-      "ecmaVersion": 6
+      "ecmaVersion": 2017
     },
     "plugins": [
       "mocha"
@@ -65,7 +65,7 @@
     ]
   },
   "scripts": {
-    "codecov": "./node_modules/bin/codecov",
+    "codecov": "./node_modules/.bin/codecov",
     "coverage": "nyc mocha --timeout 25000 test/unit",
     "lint": "standard && eslint ./test/unit",
     "precommit": "lint-staged",
