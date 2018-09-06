@@ -31,7 +31,7 @@ describe('Roosevelt Sass Section Test', function () {
   const pathOfcompiledCSS = path.join(appDir, 'statics', '.build', 'css', 'a.css')
 
   // options that would be passed to generateTestApp
-  const sOptions = {rooseveltPath: 'roosevelt', method: 'initServer'}
+  const sOptions = { rooseveltPath: 'roosevelt', method: 'initServer' }
 
   beforeEach(function () {
     // start by generating a statics folder in the roosevelt test app directory
@@ -53,7 +53,7 @@ describe('Roosevelt Sass Section Test', function () {
 
   it('should make a compiled CSS file that is the same as the compiled CSS string I have generated from using sass', function (done) {
     // Sass string that represents the CSS file that was compiled with no params set
-    const options = {file: pathOfStaticSass}
+    const options = { file: pathOfStaticSass }
     const noParamResult = sass.renderSync(options)
 
     // generate the app
@@ -75,13 +75,13 @@ describe('Roosevelt Sass Section Test', function () {
     }, sOptions)
 
     // fork the app and run it as a child process
-    const testApp = fork(path.join(appDir, 'app.js'), {'stdio': ['pipe', 'pipe', 'pipe', 'ipc']})
+    const testApp = fork(path.join(appDir, 'app.js'), { 'stdio': ['pipe', 'pipe', 'pipe', 'ipc'] })
 
     // grab the string data from the compiled css file and compare that to the string of what a normal uglified looks like
     testApp.on('message', () => {
       let contentsOfCompiledCSS = fs.readFileSync(pathOfcompiledCSS, 'utf8')
       let test = contentsOfCompiledCSS === noParamResult.css.toString()
-      assert.equal(test, true)
+      assert.strictEqual(test, true)
       testApp.kill('SIGINT')
     })
 
@@ -92,7 +92,7 @@ describe('Roosevelt Sass Section Test', function () {
 
   it('should make the same compiled css file if a param is passed to Roosevelt-Sass as to if the file and params were passed to sass', function (done) {
     // Sass string that represents the css file that was compiled with the compress set to false
-    const options = {file: pathOfStaticSass, indentType: 'tab'}
+    const options = { file: pathOfStaticSass, indentType: 'tab' }
     const paramResult = sass.renderSync(options)
 
     // generate the app
@@ -115,13 +115,13 @@ describe('Roosevelt Sass Section Test', function () {
     }, sOptions)
 
     // fork the app and run it as a child process
-    const testApp = fork(path.join(appDir, 'app.js'), {'stdio': ['pipe', 'pipe', 'pipe', 'ipc']})
+    const testApp = fork(path.join(appDir, 'app.js'), { 'stdio': ['pipe', 'pipe', 'pipe', 'ipc'] })
 
     // grab the string data from the compiled css file and compare that to the string of what a normal uglified looks like
     testApp.on('message', (app) => {
       let contentsOfCompiledCSS = fs.readFileSync(pathOfcompiledCSS, 'utf8')
       let test = contentsOfCompiledCSS === paramResult.css.toString()
-      assert.equal(test, true)
+      assert.strictEqual(test, true)
       testApp.kill('SIGINT')
     })
 
@@ -132,7 +132,7 @@ describe('Roosevelt Sass Section Test', function () {
 
   it('should make the a CSS compiled file that has a output style of nested if noMinify is true, regardless of what is put in outputStyle', function (done) {
     // Sass string that represents the css file that was compiled with the compress set to false
-    const options = {file: pathOfStaticSass, outputStyle: 'nested'}
+    const options = { file: pathOfStaticSass, outputStyle: 'nested' }
     const paramResult = sass.renderSync(options)
 
     // generate the app
@@ -156,13 +156,13 @@ describe('Roosevelt Sass Section Test', function () {
     }, sOptions)
 
     // fork the app and run it as a child process
-    const testApp = fork(path.join(appDir, 'app.js'), {'stdio': ['pipe', 'pipe', 'pipe', 'ipc']})
+    const testApp = fork(path.join(appDir, 'app.js'), { 'stdio': ['pipe', 'pipe', 'pipe', 'ipc'] })
 
     // grab the string data from the compiled css file and compare that to the string of what a normal uglified looks like
     testApp.on('message', (app) => {
       let contentsOfCompiledCSS = fs.readFileSync(pathOfcompiledCSS, 'utf8')
       let test = contentsOfCompiledCSS === paramResult.css.toString()
-      assert.equal(test, true)
+      assert.strictEqual(test, true)
       testApp.kill('SIGINT')
     })
 
@@ -173,7 +173,7 @@ describe('Roosevelt Sass Section Test', function () {
 
   it('should make the a CSS compiled file that has a output style of something other than nested if noMinify is false and something else is put into outputStyle', function (done) {
     // Sass string that represents the css file that was compiled with the compress set to false
-    const options = {file: pathOfStaticSass, outputStyle: 'nested'}
+    const options = { file: pathOfStaticSass, outputStyle: 'nested' }
     const paramResult = sass.renderSync(options)
 
     // generate the app
@@ -197,13 +197,13 @@ describe('Roosevelt Sass Section Test', function () {
     }, sOptions)
 
     // fork the app and run it as a child process
-    const testApp = fork(path.join(appDir, 'app.js'), {'stdio': ['pipe', 'pipe', 'pipe', 'ipc']})
+    const testApp = fork(path.join(appDir, 'app.js'), { 'stdio': ['pipe', 'pipe', 'pipe', 'ipc'] })
 
     // grab the string data from the compiled css file and compare that to the string of what a normal uglified looks like
     testApp.on('message', (app) => {
       let contentsOfCompiledCSS = fs.readFileSync(pathOfcompiledCSS, 'utf8')
       let test = contentsOfCompiledCSS === paramResult.css.toString()
-      assert.equal(test, false)
+      assert.strictEqual(test, false)
       testApp.kill('SIGINT')
     })
 
@@ -246,19 +246,19 @@ describe('Roosevelt Sass Section Test', function () {
     }, sOptions)
 
     // fork the app.js file and run it as a child process
-    const testApp = fork(path.join(appDir, 'app.js'), {'stdio': ['pipe', 'pipe', 'pipe', 'ipc']})
+    const testApp = fork(path.join(appDir, 'app.js'), { 'stdio': ['pipe', 'pipe', 'pipe', 'ipc'] })
 
     // wait for the app to be finished initialized
     testApp.on('message', () => {
       // see if the file exist inside the css folder
       let versionFilePath = path.join(appDir, 'statics', 'css', '_version.sass')
       let test1 = fs.existsSync(versionFilePath)
-      assert.equal(test1, true)
+      assert.strictEqual(test1, true)
       // see that the value in the css version file is correct
       let versionFileString = fs.readFileSync(path.join(appDir, 'statics', 'css', '_version.sass'), 'utf8')
       let versionFileNum = versionFileString.split(`'`)
       let test2 = packageJSON.version === versionFileNum[1]
-      assert.equal(test2, true)
+      assert.strictEqual(test2, true)
       testApp.kill('SIGINT')
     })
 
@@ -295,7 +295,7 @@ describe('Roosevelt Sass Section Test', function () {
     }, sOptions)
 
     // fork the app and run it as a child process
-    const testApp = fork(path.join(appDir, 'app.js'), {'stdio': ['pipe', 'pipe', 'pipe', 'ipc']})
+    const testApp = fork(path.join(appDir, 'app.js'), { 'stdio': ['pipe', 'pipe', 'pipe', 'ipc'] })
 
     // see that the app throws an error
     testApp.stderr.on('data', (data) => {
@@ -341,7 +341,7 @@ describe('Roosevelt Sass Section Test', function () {
     }, sOptions)
 
     // fork the app and run it as a child process in dev mode
-    const testApp = fork(path.join(appDir, 'app.js'), {'stdio': ['pipe', 'pipe', 'pipe', 'ipc']})
+    const testApp = fork(path.join(appDir, 'app.js'), { 'stdio': ['pipe', 'pipe', 'pipe', 'ipc'] })
 
     // when the server started, read the file of the build css file and see if the inline source map comment is there
     testApp.on('message', () => {
@@ -349,7 +349,7 @@ describe('Roosevelt Sass Section Test', function () {
       const cssFileData = fs.readFileSync(path.join(appDir, 'statics', '.build', 'css', 'a.css'))
       // test whether or not the text includes the unique text that is found within a source map
       let test = cssFileData.includes('/*# sourceMappingURL=data:application/json;base64')
-      assert.equal(test, true)
+      assert.strictEqual(test, true)
       testApp.kill('SIGINT')
     })
 
@@ -382,7 +382,7 @@ describe('Roosevelt Sass Section Test', function () {
     }, sOptions)
 
     // fork the app and run it as a child process in prod mode
-    const testApp = fork(path.join(appDir, 'app.js'), {'stdio': ['pipe', 'pipe', 'pipe', 'ipc']})
+    const testApp = fork(path.join(appDir, 'app.js'), { 'stdio': ['pipe', 'pipe', 'pipe', 'ipc'] })
 
     // when the server started, read the file of the build css file and see if the inline source map comment is there
     testApp.on('message', () => {
@@ -390,7 +390,7 @@ describe('Roosevelt Sass Section Test', function () {
       const cssFileData = fs.readFileSync(path.join(appDir, 'statics', '.build', 'css', 'a.css'))
       // test whether or not the text includes the unique text that is found within a source map
       let test = cssFileData.includes('/*# sourceMappingURL=data:application/json;base64')
-      assert.equal(test, false)
+      assert.strictEqual(test, false)
       testApp.kill('SIGINT')
     })
 
@@ -401,7 +401,7 @@ describe('Roosevelt Sass Section Test', function () {
 
   it('should be able to make a compiled css file even when the params of the css compilers is undefined', function (done) {
     // Sass string that represents the css file that was compiled with the compress set to false
-    const options = {file: pathOfStaticSass}
+    const options = { file: pathOfStaticSass }
     const paramResult = sass.renderSync(options)
 
     // generate the app
@@ -417,13 +417,13 @@ describe('Roosevelt Sass Section Test', function () {
     }, sOptions)
 
     // fork the app and run it as a child process
-    const testApp = fork(path.join(appDir, 'app.js'), {'stdio': ['pipe', 'pipe', 'pipe', 'ipc']})
+    const testApp = fork(path.join(appDir, 'app.js'), { 'stdio': ['pipe', 'pipe', 'pipe', 'ipc'] })
 
     // grab the string data from the compiled css file and compare that to the string of what a normal uglified looks like
     testApp.on('message', (app) => {
       let contentsOfCompiledCSS = fs.readFileSync(pathOfcompiledCSS, 'utf8')
       let test = contentsOfCompiledCSS === paramResult.css.toString()
-      assert.equal(test, true)
+      assert.strictEqual(test, true)
       testApp.kill('SIGINT')
     })
 
