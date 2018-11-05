@@ -15,8 +15,8 @@ module.exports = {
       options.data = fs.readFileSync(path.join(app.get('cssPath'), fileName), 'utf8')
       options.includePaths = [app.get('cssPath')]
 
-      // disable minify if noMinify param is present in roosevelt
-      if (app.get('params').noMinify) {
+      // disable minify if minify param is false in roosevelt
+      if (!app.get('params').minify) {
         options.outputStyle = 'nested'
       }
 
