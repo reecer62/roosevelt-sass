@@ -130,7 +130,7 @@ describe('Roosevelt Sass Section Test', function () {
     })
   })
 
-  it('should make the a CSS compiled file that has a output style of nested if noMinify is true, regardless of what is put in outputStyle', function (done) {
+  it('should make the a CSS compiled file that has a output style of nested if minify is false, regardless of what is put in outputStyle', function (done) {
     // Sass string that represents the css file that was compiled with the compress set to false
     const options = { file: pathOfStaticSass, outputStyle: 'nested' }
     const paramResult = sass.renderSync(options)
@@ -139,7 +139,7 @@ describe('Roosevelt Sass Section Test', function () {
     generateTestApp({
       appDir: appDir,
       generateFolderStructure: true,
-      noMinify: true,
+      minify: false,
       css: {
         compiler: {
           nodeModule: '../../roosevelt-sass',
@@ -322,7 +322,6 @@ describe('Roosevelt Sass Section Test', function () {
     generateTestApp({
       appDir: appDir,
       generateFolderStructure: true,
-      nodeEnv: 'development',
       css: {
         compiler: {
           nodeModule: '../../roosevelt-sass',
@@ -341,7 +340,7 @@ describe('Roosevelt Sass Section Test', function () {
     }, sOptions)
 
     // fork the app and run it as a child process in dev mode
-    const testApp = fork(path.join(appDir, 'app.js'), { 'stdio': ['pipe', 'pipe', 'pipe', 'ipc'] })
+    const testApp = fork(path.join(appDir, 'app.js'), ['--dev'], { 'stdio': ['pipe', 'pipe', 'pipe', 'ipc'] })
 
     // when the server started, read the file of the build css file and see if the inline source map comment is there
     testApp.on('message', () => {
