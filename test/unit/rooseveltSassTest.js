@@ -82,7 +82,7 @@ describe('Roosevelt Sass Section Test', function () {
       let contentsOfCompiledCSS = fs.readFileSync(pathOfcompiledCSS, 'utf8')
       let test = contentsOfCompiledCSS === noParamResult.css.toString()
       assert.strictEqual(test, true)
-      testApp.kill('SIGINT')
+      testApp.send('stop')
     })
 
     testApp.on('exit', () => {
@@ -122,7 +122,7 @@ describe('Roosevelt Sass Section Test', function () {
       let contentsOfCompiledCSS = fs.readFileSync(pathOfcompiledCSS, 'utf8')
       let test = contentsOfCompiledCSS === paramResult.css.toString()
       assert.strictEqual(test, true)
-      testApp.kill('SIGINT')
+      testApp.send('stop')
     })
 
     testApp.on('exit', () => {
@@ -130,7 +130,7 @@ describe('Roosevelt Sass Section Test', function () {
     })
   })
 
-  it('should make the a CSS compiled file that has a output style of nested if noMinify is true, regardless of what is put in outputStyle', function (done) {
+  it('should make the a CSS compiled file that has a output style of nested if minify is false, regardless of what is put in outputStyle', function (done) {
     // Sass string that represents the css file that was compiled with the compress set to false
     const options = { file: pathOfStaticSass, outputStyle: 'nested' }
     const paramResult = sass.renderSync(options)
@@ -139,7 +139,7 @@ describe('Roosevelt Sass Section Test', function () {
     generateTestApp({
       appDir: appDir,
       generateFolderStructure: true,
-      noMinify: true,
+      minify: false,
       css: {
         compiler: {
           nodeModule: '../../roosevelt-sass',
@@ -163,7 +163,7 @@ describe('Roosevelt Sass Section Test', function () {
       let contentsOfCompiledCSS = fs.readFileSync(pathOfcompiledCSS, 'utf8')
       let test = contentsOfCompiledCSS === paramResult.css.toString()
       assert.strictEqual(test, true)
-      testApp.kill('SIGINT')
+      testApp.send('stop')
     })
 
     testApp.on('exit', () => {
@@ -204,7 +204,7 @@ describe('Roosevelt Sass Section Test', function () {
       let contentsOfCompiledCSS = fs.readFileSync(pathOfcompiledCSS, 'utf8')
       let test = contentsOfCompiledCSS === paramResult.css.toString()
       assert.strictEqual(test, false)
-      testApp.kill('SIGINT')
+      testApp.send('stop')
     })
 
     testApp.on('exit', () => {
@@ -259,7 +259,7 @@ describe('Roosevelt Sass Section Test', function () {
       let versionFileNum = versionFileString.split(`'`)
       let test2 = packageJSON.version === versionFileNum[1]
       assert.strictEqual(test2, true)
-      testApp.kill('SIGINT')
+      testApp.send('stop')
     })
 
     testApp.on('exit', () => {
@@ -309,7 +309,7 @@ describe('Roosevelt Sass Section Test', function () {
       if (!error) {
         assert.fail('the app was able to initialize, meaning that roosevelt-sass was not able to detect the error')
       }
-      testApp.kill('SIGINT')
+      testApp.send('stop')
     })
 
     testApp.on('exit', () => {
@@ -322,7 +322,6 @@ describe('Roosevelt Sass Section Test', function () {
     generateTestApp({
       appDir: appDir,
       generateFolderStructure: true,
-      nodeEnv: 'development',
       css: {
         compiler: {
           nodeModule: '../../roosevelt-sass',
@@ -341,7 +340,7 @@ describe('Roosevelt Sass Section Test', function () {
     }, sOptions)
 
     // fork the app and run it as a child process in dev mode
-    const testApp = fork(path.join(appDir, 'app.js'), { 'stdio': ['pipe', 'pipe', 'pipe', 'ipc'] })
+    const testApp = fork(path.join(appDir, 'app.js'), ['--dev'], { 'stdio': ['pipe', 'pipe', 'pipe', 'ipc'] })
 
     // when the server started, read the file of the build css file and see if the inline source map comment is there
     testApp.on('message', () => {
@@ -350,7 +349,7 @@ describe('Roosevelt Sass Section Test', function () {
       // test whether or not the text includes the unique text that is found within a source map
       let test = cssFileData.includes('/*# sourceMappingURL=data:application/json;base64')
       assert.strictEqual(test, true)
-      testApp.kill('SIGINT')
+      testApp.send('stop')
     })
 
     testApp.on('exit', () => {
@@ -391,7 +390,7 @@ describe('Roosevelt Sass Section Test', function () {
       // test whether or not the text includes the unique text that is found within a source map
       let test = cssFileData.includes('/*# sourceMappingURL=data:application/json;base64')
       assert.strictEqual(test, false)
-      testApp.kill('SIGINT')
+      testApp.send('stop')
     })
 
     testApp.on('exit', () => {
@@ -424,7 +423,7 @@ describe('Roosevelt Sass Section Test', function () {
       let contentsOfCompiledCSS = fs.readFileSync(pathOfcompiledCSS, 'utf8')
       let test = contentsOfCompiledCSS === paramResult.css.toString()
       assert.strictEqual(test, true)
-      testApp.kill('SIGINT')
+      testApp.send('stop')
     })
 
     testApp.on('exit', () => {
