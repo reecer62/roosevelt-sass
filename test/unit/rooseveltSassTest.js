@@ -82,7 +82,6 @@ describe('Roosevelt Sass Section Test', function () {
       let contentsOfCompiledCSS = fs.readFileSync(pathOfcompiledCSS, 'utf8')
       let test = contentsOfCompiledCSS === noParamResult.css.toString()
       assert.strictEqual(test, true)
-      testApp.send('stop')
     })
 
     testApp.on('exit', () => {
@@ -122,7 +121,6 @@ describe('Roosevelt Sass Section Test', function () {
       let contentsOfCompiledCSS = fs.readFileSync(pathOfcompiledCSS, 'utf8')
       let test = contentsOfCompiledCSS === paramResult.css.toString()
       assert.strictEqual(test, true)
-      testApp.send('stop')
     })
 
     testApp.on('exit', () => {
@@ -163,7 +161,6 @@ describe('Roosevelt Sass Section Test', function () {
       let contentsOfCompiledCSS = fs.readFileSync(pathOfcompiledCSS, 'utf8')
       let test = contentsOfCompiledCSS === paramResult.css.toString()
       assert.strictEqual(test, true)
-      testApp.send('stop')
     })
 
     testApp.on('exit', () => {
@@ -204,7 +201,6 @@ describe('Roosevelt Sass Section Test', function () {
       let contentsOfCompiledCSS = fs.readFileSync(pathOfcompiledCSS, 'utf8')
       let test = contentsOfCompiledCSS === paramResult.css.toString()
       assert.strictEqual(test, false)
-      testApp.send('stop')
     })
 
     testApp.on('exit', () => {
@@ -259,7 +255,6 @@ describe('Roosevelt Sass Section Test', function () {
       let versionFileNum = versionFileString.split(`'`)
       let test2 = packageJSON.version === versionFileNum[1]
       assert.strictEqual(test2, true)
-      testApp.send('stop')
     })
 
     testApp.on('exit', () => {
@@ -309,7 +304,6 @@ describe('Roosevelt Sass Section Test', function () {
       if (!error) {
         assert.fail('the app was able to initialize, meaning that roosevelt-sass was not able to detect the error')
       }
-      testApp.send('stop')
     })
 
     testApp.on('exit', () => {
@@ -349,7 +343,6 @@ describe('Roosevelt Sass Section Test', function () {
       // test whether or not the text includes the unique text that is found within a source map
       let test = cssFileData.includes('/*# sourceMappingURL=data:application/json;base64')
       assert.strictEqual(test, true)
-      testApp.send('stop')
     })
 
     testApp.on('exit', () => {
@@ -390,7 +383,6 @@ describe('Roosevelt Sass Section Test', function () {
       // test whether or not the text includes the unique text that is found within a source map
       let test = cssFileData.includes('/*# sourceMappingURL=data:application/json;base64')
       assert.strictEqual(test, false)
-      testApp.send('stop')
     })
 
     testApp.on('exit', () => {
@@ -423,7 +415,6 @@ describe('Roosevelt Sass Section Test', function () {
       let contentsOfCompiledCSS = fs.readFileSync(pathOfcompiledCSS, 'utf8')
       let test = contentsOfCompiledCSS === paramResult.css.toString()
       assert.strictEqual(test, true)
-      testApp.send('stop')
     })
 
     testApp.on('exit', () => {
