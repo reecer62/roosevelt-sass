@@ -423,7 +423,38 @@ describe('Roosevelt Sass Section Test', function () {
       let contentsOfCompiledCSS = fs.readFileSync(pathOfcompiledCSS, 'utf8')
       let test = contentsOfCompiledCSS === paramResult.css.toString()
       assert.strictEqual(test, true)
-      testApp.send('stop')
+    })
+
+    testApp.on('exit', () => {
+      done()
+    })
+  })
+
+  it('should enable source mapping by default in dev mode when "sourceMap" param is not defined', function (done) {
+    // generate the app
+    generateTestApp({
+      appDir: appDir,
+      generateFolderStructure: true,
+      css: {
+        compiler: {
+          nodeModule: '../../roosevelt-sass',
+          params: {
+            sourceMap: null
+          }
+        }
+      }
+    }, sOptions)
+
+    // fork the app and run it as a child process in dev mode
+    const testApp = fork(path.join(appDir, 'app.js'), ['--dev'], { 'stdio': ['pipe', 'pipe', 'pipe', 'ipc'] })
+
+    // when the server started, read the file of the build css file and see if the inline source map comment is there
+    testApp.on('message', () => {
+      // read the file
+      const cssFileData = fs.readFileSync(path.join(appDir, 'statics', '.build', 'css', 'a.css'))
+      // test whether or not the text includes the unique text that is found within a source map
+      let test = cssFileData.includes('/*# sourceMappingURL=data:application/json;base64')
+      assert.strictEqual(test, true)
     })
 
     testApp.on('exit', () => {
