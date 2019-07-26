@@ -21,12 +21,16 @@ module.exports = {
       }
 
       // add the sourceMap param to option if the env is in development
-      if (app.settings.env === 'development') {
+      if (app.settings.env === 'development' && params.sourceMap !== null && params.sourceMap !== undefined) {
         options.sourceMap = params.sourceMap
         options.outFile = params.outFile
         options.sourceMapEmbed = params.sourceMapEmbed
         options.omitSourceMapUrl = params.omitSourceMapUrl
         options.sourceMapRoot = params.sourceMapRoot
+      } else if (app.settings.env === 'development') {
+        options.sourceMap = true
+        options.sourceMapEmbed = true
+        options.sourceMapContents = true
       } else {
         options.sourceMap = undefined
         options.outFile = undefined
