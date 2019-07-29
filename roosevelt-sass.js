@@ -10,7 +10,7 @@ module.exports = {
   parse: function (app, fileName) {
     return new Promise((resolve, reject) => {
       const params = app.get('params').css.compiler.params
-      let options = params || {}
+      const options = params || {}
 
       options.data = fs.readFileSync(path.join(app.get('cssPath'), fileName), 'utf8')
       options.includePaths = [app.get('cssPath')]
@@ -45,8 +45,8 @@ module.exports = {
           return
         }
 
-        let newCSS = output.css
-        let newFile = fileName.replace('.scss', '.css')
+        const newCSS = output.css
+        const newFile = fileName.replace('.scss', '.css')
 
         resolve([newFile, newCSS])
       })

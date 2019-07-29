@@ -75,14 +75,13 @@ describe('Roosevelt Sass Section Test', function () {
     }, sOptions)
 
     // fork the app and run it as a child process
-    const testApp = fork(path.join(appDir, 'app.js'), { 'stdio': ['pipe', 'pipe', 'pipe', 'ipc'] })
+    const testApp = fork(path.join(appDir, 'app.js'), { stdio: ['pipe', 'pipe', 'pipe', 'ipc'] })
 
     // grab the string data from the compiled css file and compare that to the string of what a normal uglified looks like
     testApp.on('message', () => {
-      let contentsOfCompiledCSS = fs.readFileSync(pathOfcompiledCSS, 'utf8')
-      let test = contentsOfCompiledCSS === noParamResult.css.toString()
+      const contentsOfCompiledCSS = fs.readFileSync(pathOfcompiledCSS, 'utf8')
+      const test = contentsOfCompiledCSS === noParamResult.css.toString()
       assert.strictEqual(test, true)
-      testApp.send('stop')
     })
 
     testApp.on('exit', () => {
@@ -115,14 +114,13 @@ describe('Roosevelt Sass Section Test', function () {
     }, sOptions)
 
     // fork the app and run it as a child process
-    const testApp = fork(path.join(appDir, 'app.js'), { 'stdio': ['pipe', 'pipe', 'pipe', 'ipc'] })
+    const testApp = fork(path.join(appDir, 'app.js'), { stdio: ['pipe', 'pipe', 'pipe', 'ipc'] })
 
     // grab the string data from the compiled css file and compare that to the string of what a normal uglified looks like
     testApp.on('message', (app) => {
-      let contentsOfCompiledCSS = fs.readFileSync(pathOfcompiledCSS, 'utf8')
-      let test = contentsOfCompiledCSS === paramResult.css.toString()
+      const contentsOfCompiledCSS = fs.readFileSync(pathOfcompiledCSS, 'utf8')
+      const test = contentsOfCompiledCSS === paramResult.css.toString()
       assert.strictEqual(test, true)
-      testApp.send('stop')
     })
 
     testApp.on('exit', () => {
@@ -156,14 +154,13 @@ describe('Roosevelt Sass Section Test', function () {
     }, sOptions)
 
     // fork the app and run it as a child process
-    const testApp = fork(path.join(appDir, 'app.js'), { 'stdio': ['pipe', 'pipe', 'pipe', 'ipc'] })
+    const testApp = fork(path.join(appDir, 'app.js'), { stdio: ['pipe', 'pipe', 'pipe', 'ipc'] })
 
     // grab the string data from the compiled css file and compare that to the string of what a normal uglified looks like
     testApp.on('message', (app) => {
-      let contentsOfCompiledCSS = fs.readFileSync(pathOfcompiledCSS, 'utf8')
-      let test = contentsOfCompiledCSS === paramResult.css.toString()
+      const contentsOfCompiledCSS = fs.readFileSync(pathOfcompiledCSS, 'utf8')
+      const test = contentsOfCompiledCSS === paramResult.css.toString()
       assert.strictEqual(test, true)
-      testApp.send('stop')
     })
 
     testApp.on('exit', () => {
@@ -197,14 +194,13 @@ describe('Roosevelt Sass Section Test', function () {
     }, sOptions)
 
     // fork the app and run it as a child process
-    const testApp = fork(path.join(appDir, 'app.js'), { 'stdio': ['pipe', 'pipe', 'pipe', 'ipc'] })
+    const testApp = fork(path.join(appDir, 'app.js'), { stdio: ['pipe', 'pipe', 'pipe', 'ipc'] })
 
     // grab the string data from the compiled css file and compare that to the string of what a normal uglified looks like
     testApp.on('message', (app) => {
-      let contentsOfCompiledCSS = fs.readFileSync(pathOfcompiledCSS, 'utf8')
-      let test = contentsOfCompiledCSS === paramResult.css.toString()
+      const contentsOfCompiledCSS = fs.readFileSync(pathOfcompiledCSS, 'utf8')
+      const test = contentsOfCompiledCSS === paramResult.css.toString()
       assert.strictEqual(test, false)
-      testApp.send('stop')
     })
 
     testApp.on('exit', () => {
@@ -214,7 +210,7 @@ describe('Roosevelt Sass Section Test', function () {
 
   it('make a CSS file that declares a CSS variable that contains the app version number from package.js', function (done) {
     // contents of sample package.json file to use for testing css versionFile
-    let packageJSON = {
+    const packageJSON = {
       version: '0.3.1',
       rooseveltConfig: {}
     }
@@ -246,20 +242,19 @@ describe('Roosevelt Sass Section Test', function () {
     }, sOptions)
 
     // fork the app.js file and run it as a child process
-    const testApp = fork(path.join(appDir, 'app.js'), { 'stdio': ['pipe', 'pipe', 'pipe', 'ipc'] })
+    const testApp = fork(path.join(appDir, 'app.js'), { stdio: ['pipe', 'pipe', 'pipe', 'ipc'] })
 
     // wait for the app to be finished initialized
     testApp.on('message', () => {
       // see if the file exist inside the css folder
-      let versionFilePath = path.join(appDir, 'statics', 'css', '_version.sass')
-      let test1 = fs.existsSync(versionFilePath)
+      const versionFilePath = path.join(appDir, 'statics', 'css', '_version.sass')
+      const test1 = fs.existsSync(versionFilePath)
       assert.strictEqual(test1, true)
       // see that the value in the css version file is correct
-      let versionFileString = fs.readFileSync(path.join(appDir, 'statics', 'css', '_version.sass'), 'utf8')
-      let versionFileNum = versionFileString.split(`'`)
-      let test2 = packageJSON.version === versionFileNum[1]
+      const versionFileString = fs.readFileSync(path.join(appDir, 'statics', 'css', '_version.sass'), 'utf8')
+      const versionFileNum = versionFileString.split(`'`)
+      const test2 = packageJSON.version === versionFileNum[1]
       assert.strictEqual(test2, true)
-      testApp.send('stop')
     })
 
     testApp.on('exit', () => {
@@ -295,7 +290,7 @@ describe('Roosevelt Sass Section Test', function () {
     }, sOptions)
 
     // fork the app and run it as a child process
-    const testApp = fork(path.join(appDir, 'app.js'), { 'stdio': ['pipe', 'pipe', 'pipe', 'ipc'] })
+    const testApp = fork(path.join(appDir, 'app.js'), { stdio: ['pipe', 'pipe', 'pipe', 'ipc'] })
 
     // see that the app throws an error
     testApp.stderr.on('data', (data) => {
@@ -309,7 +304,6 @@ describe('Roosevelt Sass Section Test', function () {
       if (!error) {
         assert.fail('the app was able to initialize, meaning that roosevelt-sass was not able to detect the error')
       }
-      testApp.send('stop')
     })
 
     testApp.on('exit', () => {
@@ -340,16 +334,15 @@ describe('Roosevelt Sass Section Test', function () {
     }, sOptions)
 
     // fork the app and run it as a child process in dev mode
-    const testApp = fork(path.join(appDir, 'app.js'), ['--dev'], { 'stdio': ['pipe', 'pipe', 'pipe', 'ipc'] })
+    const testApp = fork(path.join(appDir, 'app.js'), ['--dev'], { stdio: ['pipe', 'pipe', 'pipe', 'ipc'] })
 
     // when the server started, read the file of the build css file and see if the inline source map comment is there
     testApp.on('message', () => {
       // read the file
       const cssFileData = fs.readFileSync(path.join(appDir, 'statics', '.build', 'css', 'a.css'))
       // test whether or not the text includes the unique text that is found within a source map
-      let test = cssFileData.includes('/*# sourceMappingURL=data:application/json;base64')
+      const test = cssFileData.includes('/*# sourceMappingURL=data:application/json;base64')
       assert.strictEqual(test, true)
-      testApp.send('stop')
     })
 
     testApp.on('exit', () => {
@@ -381,16 +374,15 @@ describe('Roosevelt Sass Section Test', function () {
     }, sOptions)
 
     // fork the app and run it as a child process in prod mode
-    const testApp = fork(path.join(appDir, 'app.js'), { 'stdio': ['pipe', 'pipe', 'pipe', 'ipc'] })
+    const testApp = fork(path.join(appDir, 'app.js'), { stdio: ['pipe', 'pipe', 'pipe', 'ipc'] })
 
     // when the server started, read the file of the build css file and see if the inline source map comment is there
     testApp.on('message', () => {
       // read the file
       const cssFileData = fs.readFileSync(path.join(appDir, 'statics', '.build', 'css', 'a.css'))
       // test whether or not the text includes the unique text that is found within a source map
-      let test = cssFileData.includes('/*# sourceMappingURL=data:application/json;base64')
+      const test = cssFileData.includes('/*# sourceMappingURL=data:application/json;base64')
       assert.strictEqual(test, false)
-      testApp.send('stop')
     })
 
     testApp.on('exit', () => {
@@ -416,12 +408,12 @@ describe('Roosevelt Sass Section Test', function () {
     }, sOptions)
 
     // fork the app and run it as a child process
-    const testApp = fork(path.join(appDir, 'app.js'), { 'stdio': ['pipe', 'pipe', 'pipe', 'ipc'] })
+    const testApp = fork(path.join(appDir, 'app.js'), { stdio: ['pipe', 'pipe', 'pipe', 'ipc'] })
 
     // grab the string data from the compiled css file and compare that to the string of what a normal uglified looks like
     testApp.on('message', (app) => {
-      let contentsOfCompiledCSS = fs.readFileSync(pathOfcompiledCSS, 'utf8')
-      let test = contentsOfCompiledCSS === paramResult.css.toString()
+      const contentsOfCompiledCSS = fs.readFileSync(pathOfcompiledCSS, 'utf8')
+      const test = contentsOfCompiledCSS === paramResult.css.toString()
       assert.strictEqual(test, true)
     })
 
@@ -446,14 +438,14 @@ describe('Roosevelt Sass Section Test', function () {
     }, sOptions)
 
     // fork the app and run it as a child process in dev mode
-    const testApp = fork(path.join(appDir, 'app.js'), ['--dev'], { 'stdio': ['pipe', 'pipe', 'pipe', 'ipc'] })
+    const testApp = fork(path.join(appDir, 'app.js'), ['--dev'], { stdio: ['pipe', 'pipe', 'pipe', 'ipc'] })
 
     // when the server started, read the file of the build css file and see if the inline source map comment is there
     testApp.on('message', () => {
       // read the file
       const cssFileData = fs.readFileSync(path.join(appDir, 'statics', '.build', 'css', 'a.css'))
       // test whether or not the text includes the unique text that is found within a source map
-      let test = cssFileData.includes('/*# sourceMappingURL=data:application/json;base64')
+      const test = cssFileData.includes('/*# sourceMappingURL=data:application/json;base64')
       assert.strictEqual(test, true)
     })
 
